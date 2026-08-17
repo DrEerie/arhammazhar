@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M. Arham B. Mazhar — Professor · Author · Technologist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --black-2: #111111;
+    --black-3: #1a1a1a;
+    --gold: #C9A84C;
+    --gold-light: #e8c97a;
+    --white: #f5f0e8;
+    --white-dim: rgba(245,240,232,0.55);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--sans); overflow-x: hidden; cursor: none; }
+
+  .cursor { position: fixed; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+  .cursor-ring { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(201,168,76,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transition: width 0.2s, height 0.2s; transform: translate(-50%,-50%); }
+
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.35; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 900; padding: 24px 64px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(8,8,8,0.96), transparent); }
+  .nav-logo { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; letter-spacing: 0.04em; color: var(--gold); text-decoration: none; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white-dim); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 64px; position: relative; overflow: hidden; }
+  .hero-bg-circle { position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%); top: 50%; right: -150px; transform: translateY(-50%); pointer-events: none; }
+  .hero-line { width: 60px; height: 1px; background: var(--gold); margin-bottom: 28px; opacity: 0; animation: fadeInLeft 0.8s ease 0.2s forwards; }
+  .hero-greeting { font-size: 0.78rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; opacity: 0; animation: fadeInLeft 0.8s ease 0.4s forwards; }
+  .hero-name { font-family: var(--serif); font-size: clamp(3.5rem, 8vw, 7.5rem); font-weight: 300; line-height: 0.95; letter-spacing: -0.02em; opacity: 0; animation: fadeInLeft 0.8s ease 0.6s forwards; }
+  .hero-name em { font-style: italic; color: var(--gold-light); }
+  .hero-tagline { font-family: var(--serif); font-size: clamp(1rem, 1.8vw, 1.35rem); font-weight: 300; color: var(--white-dim); margin-top: 28px; max-width: 560px; line-height: 1.75; font-style: italic; opacity: 0; animation: fadeInLeft 0.8s ease 0.8s forwards; }
+  .hero-roles { display: flex; gap: 32px; margin-top: 48px; flex-wrap: wrap; opacity: 0; animation: fadeInLeft 0.8s ease 1s forwards; }
+  .role-pill { display: flex; align-items: center; gap: 10px; font-size: 0.73rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white-dim); }
+  .role-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  .hero-scroll { position: absolute; bottom: 40px; left: 64px; display: flex; align-items: center; gap: 16px; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-dim); opacity: 0; animation: fadeIn 1s ease 1.4s forwards; }
+  .scroll-line { width: 40px; height: 1px; background: var(--gold-light); animation: scrollPulse 2s ease-in-out 2s infinite; }
+  @keyframes scrollPulse { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(1.6)} }
+
+  #stats { background: var(--black-2); border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); padding: 64px; display: grid; grid-template-columns: repeat(4,1fr); }
+  .stat-item { padding: 0 40px; border-right: 1px solid rgba(201,168,76,0.12); text-align: center; }
+  .stat-item:last-child { border-right: none; }
+  .stat-number { font-family: var(--serif); font-size: clamp(3rem,5vw,4.5rem); font-weight: 300; color: var(--gold); line-height: 1; display: block; }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-dim); margin-top: 10px; display: block; }
+
+  #about { padding: 120px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+  .about-label { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 16px; }
+  .about-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+  .about-title { font-family: var(--serif); font-size: clamp(2.2rem,4vw,3.8rem); font-weight: 300; line-height: 1.15; color: var(--white); margin-bottom: 28px; }
+  .about-title em { font-style: italic; color: var(--gold-light); }
+  .about-text { font-size: 1rem; line-height: 1.95; color: var(--white-dim); font-weight: 300; }
+  .about-visual { position: relative; height: 480px; }
+  .about-frame { position: absolute; inset: 0; background: var(--black-3); border: 1px solid rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .about-frame-inner { font-family: var(--serif); font-size: 8rem; color: rgba(201,168,76,0.06); font-weight: 700; letter-spacing: -0.05em; user-select: none; line-height: 1; }
+  .about-frame-quote { position: absolute; bottom: 32px; left: 32px; right: 32px; font-family: var(--serif); font-size: 1.2rem; font-style: italic; color: var(--white-dim); line-height: 1.65; border-left: 2px solid var(--gold); padding-left: 20px; }
+  .corner-accent { position: absolute; width: 40px; height: 40px; border-color: var(--gold); border-style: solid; opacity: 0.5; }
+  .corner-tl { top: -8px; left: -8px; border-width: 2px 0 0 2px; }
+  .corner-br { bottom: -8px; right: -8px; border-width: 0 2px 2px 0; }
+
+  #books { padding: 120px 64px; background: var(--black-2); }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 72px; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 16px; }
+  .section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+  .section-title { font-family: var(--serif); font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 300; line-height: 1.1; color: var(--white); }
+  .section-title em { font-style: italic; color: var(--gold-light); }
+  .section-count { font-family: var(--serif); font-size: 5rem; font-weight: 300; color: rgba(201,168,76,0.1); line-height: 1; }
+
+  .books-featured { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(201,168,76,0.06); margin-bottom: 2px; }
+  .book-card-large { background: var(--black-3); padding: 48px 40px; position: relative; transition: background 0.3s; overflow: hidden; }
+  .book-card-large:first-child { grid-column: span 2; }
+  .book-card-large:hover { background: #1e1e1e; }
+  .book-card-large::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--gold), transparent); transform: scaleX(0); transform-origin: left; transition: transform 0.35s; }
+  .book-card-large:hover::after { transform: scaleX(1); }
+  .book-num { font-family: var(--serif); font-size: 4rem; font-weight: 300; color: rgba(201,168,76,0.1); line-height: 1; margin-bottom: 20px; }
+  .book-genre-tag { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .book-title-large { font-family: var(--serif); font-size: clamp(1.3rem,2vw,1.8rem); font-weight: 400; color: var(--white); line-height: 1.3; margin-bottom: 14px; }
+  .book-desc { font-size: 0.87rem; color: var(--white-dim); line-height: 1.8; font-weight: 300; }
+  .books-view-all { background: var(--black-3); border: 1px solid rgba(201,168,76,0.1); border-top: none; padding: 32px 40px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: border-color 0.3s; }
+  .books-view-all:hover { border-color: rgba(201,168,76,0.35); }
+  .view-all-text { font-family: var(--serif); font-size: 1.2rem; font-style: italic; color: var(--white-dim); }
+  .view-all-text strong { color: var(--gold); font-style: normal; font-weight: 400; }
+  .view-all-arrow { color: var(--gold); font-size: 1.4rem; transition: transform 0.3s; }
+  .books-view-all:hover .view-all-arrow { transform: translateX(8px); }
+
+  #roles { padding: 120px 64px; }
+  .roles-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 72px; background: rgba(201,168,76,0.06); }
+  .role-card { background: var(--black); padding: 56px 48px; position: relative; overflow: hidden; transition: background 0.3s; }
+  .role-card:hover { background: var(--black-3); }
+  .role-icon { font-size: 2.8rem; margin-bottom: 28px; display: block; }
+  .role-card-title { font-family: var(--serif); font-size: 2rem; font-weight: 300; color: var(--white); margin-bottom: 16px; }
+  .role-card-text { font-size: 0.87rem; color: var(--white-dim); line-height: 1.85; font-weight: 300; }
+  .role-card-accent { position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: radial-gradient(circle at top right, rgba(201,168,76,0.07), transparent); }
+
+  #testimonials { padding: 120px 64px; background: var(--black-2); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 72px; background: rgba(201,168,76,0.06); }
+  .testimonial-card { background: var(--black-2); padding: 52px 44px; position: relative; transition: background 0.3s; }
+  .testimonial-card:hover { background: #161616; }
+  .testimonial-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--gold), transparent); transform: scaleX(0); transform-origin: left; transition: transform 0.35s; }
+  .testimonial-card:hover::before { transform: scaleX(1); }
+  .testimonial-quote-mark { font-family: var(--serif); font-size: 6rem; line-height: 0.7; color: rgba(201,168,76,0.12); font-weight: 300; margin-bottom: 28px; display: block; }
+  .testimonial-text { font-family: var(--serif); font-size: 1.08rem; font-style: italic; color: var(--white-dim); line-height: 1.82; margin-bottom: 36px; }
+  .testimonial-name { font-size: 0.85rem; font-weight: 500; color: var(--white); letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
+  .testimonial-role { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+
+  #achievements { padding: 120px 64px; }
+  .achievements-list { margin-top: 72px; }
+  .achievement-item { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 48px; padding: 36px 0; border-bottom: 1px solid rgba(201,168,76,0.08); transition: padding-left 0.3s; }
+  .achievement-item:hover { padding-left: 16px; }
+  .achievement-item:first-child { border-top: 1px solid rgba(201,168,76,0.08); }
+  .achievement-num { font-family: var(--serif); font-size: 0.85rem; color: var(--gold); opacity: 0.6; }
+  .achievement-text { font-family: var(--serif); font-size: clamp(1.1rem,2vw,1.5rem); font-weight: 300; color: var(--white); }
+  .achievement-text em { font-style: italic; color: var(--gold-light); }
+  .achievement-tag { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 6px 14px; white-space: nowrap; }
+
+  #contact { padding: 140px 64px; text-align: center; position: relative; overflow: hidden; }
+  #contact::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(201,168,76,0.05) 0%, transparent 65%); pointer-events: none; }
+  .contact-title { font-family: var(--serif); font-size: clamp(3rem,7vw,7rem); font-weight: 300; color: var(--white); line-height: 1; margin-bottom: 28px; }
+  .contact-title em { font-style: italic; color: var(--gold-light); }
+  .contact-sub { font-size: 1rem; color: var(--white-dim); max-width: 440px; margin: 0 auto 56px; line-height: 1.8; font-weight: 300; }
+  .contact-btn { display: inline-block; padding: 18px 52px; border: 1px solid var(--gold); color: var(--gold); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; transition: background 0.3s, color 0.3s; font-family: var(--sans); cursor: pointer; background: transparent; }
+  .contact-btn:hover { background: var(--gold); color: var(--black); }
+  .social-links { display: flex; justify-content: center; gap: 48px; margin-top: 64px; }
+  .social-link { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white-dim); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 10px; }
+  .social-link:hover { color: var(--gold); }
+  .social-link::before { content: '—'; color: var(--gold); opacity: 0.4; }
+
+  footer { padding: 32px 64px; border-top: 1px solid rgba(201,168,76,0.1); display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 0.72rem; color: rgba(245,240,232,0.3); }
+  .footer-mark { font-family: var(--serif); font-size: 0.9rem; color: var(--gold); opacity: 0.5; }
+
+  /* CV Button */
+  .cv-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 36px; border: 1px solid rgba(201,168,76,0.5);
+    color: var(--white-dim); font-size: 0.73rem; letter-spacing: 0.18em;
+    text-transform: uppercase; text-decoration: none;
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+    font-family: var(--sans); cursor: pointer; background: transparent;
+  }
+  .cv-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.05); }
+  .cv-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+
+  /* Teaching Spotlight */
+  #teaching {
+    padding: 120px 64px;
+    background: var(--black-3);
+    position: relative;
+    overflow: hidden;
+  }
+  #teaching::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    opacity: 0.4;
+  }
+  .teaching-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 100px;
+    align-items: center;
+  }
+  .teaching-number {
+    font-family: var(--serif);
+    font-size: clamp(6rem, 12vw, 11rem);
+    font-weight: 300;
+    color: rgba(201,168,76,0.06);
+    line-height: 1;
+    position: absolute;
+    right: 64px;
+    bottom: 40px;
+    user-select: none;
+    pointer-events: none;
+  }
+  .teaching-label {
+    font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .teaching-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+  .teaching-title {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .teaching-title em { font-style: italic; color: var(--gold-light); }
+  .teaching-philosophy {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.6;
+    border-left: 2px solid var(--gold);
+    padding: 20px 0 20px 32px;
+    margin-bottom: 32px;
+  }
+  .teaching-body {
+    font-size: 0.95rem;
+    line-height: 1.95;
+    color: var(--white-dim);
+    font-weight: 300;
+  }
+  .teaching-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(201,168,76,0.06);
+  }
+  .teaching-pillar {
+    background: var(--black);
+    padding: 36px 32px;
+    transition: background 0.3s;
+  }
+  .teaching-pillar:hover { background: #141414; }
+  .pillar-icon { font-size: 1.8rem; margin-bottom: 16px; display: block; }
+  .pillar-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .pillar-text {
+    font-size: 0.8rem;
+    color: var(--white-dim);
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  @media (max-width: 1024px) {
+    #teaching { padding: 80px 32px; }
+    .teaching-inner { grid-template-columns: 1fr; gap: 48px; }
+    .teaching-pillars { grid-template-columns: 1fr; }
+    .teaching-number { display: none; }
+  }
+
+  .reveal { animation: revealUp 0.8s ease both; }
+  .reveal-delay-1 { animation-delay: 0.1s; }
+  .reveal-delay-2 { animation-delay: 0.2s; }
+  .reveal-delay-3 { animation-delay: 0.3s; }
+  @keyframes revealUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+  @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  @media (max-width: 1024px) {
+    nav { padding: 20px 32px; }
+    .nav-links { display: none; }
+    #hero { padding: 0 32px; }
+    .hero-scroll { left: 32px; }
+    #stats { padding: 48px 32px; grid-template-columns: repeat(2,1fr); gap: 32px; }
+    .stat-item { border-right: none; }
+    #about { padding: 80px 32px; grid-template-columns: 1fr; gap: 48px; }
+    .about-visual { height: 300px; }
+    #books { padding: 80px 32px; }
+    .books-featured { grid-template-columns: 1fr; }
+    .book-card-large:first-child { grid-column: span 1; }
+    #roles { padding: 80px 32px; }
+    .roles-grid { grid-template-columns: 1fr; }
+    #testimonials { padding: 80px 32px; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    #achievements { padding: 80px 32px; }
+    .achievement-item { grid-template-columns: 60px 1fr; }
+    .achievement-tag { display: none; }
+    #contact { padding: 100px 32px; }
+    footer { padding: 24px 32px; flex-direction: column; gap: 12px; text-align: center; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+    .section-count { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="#hero" class="nav-logo">M. Arham B. Mazhar</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#teaching">Teaching</a></li>
+    <li><a href="#books">Books</a></li>
+    <li><a href="#roles">What I Do</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-line"></div>
+  <div class="hero-greeting">Professor · Author · Technologist · Entrepreneur</div>
+  <h1 class="hero-name">M. Arham<br><em>B. Mazhar</em></h1>
+  <p class="hero-tagline">Born to lead, built to create — shaping minds, authoring knowledge, and building what comes next. All at twenty-two.</p>
+  <div class="hero-roles">
+    <span class="role-pill">Professor</span>
+    <span class="role-pill">17× Author</span>
+    <span class="role-pill">Technologist</span>
+    <span class="role-pill">Entrepreneur</span>
+  </div>
+  <div style="margin-top:40px;opacity:0;animation:fadeInLeft 0.8s ease 1.2s forwards;">
+    <a href="cv-placeholder.pdf" download class="cv-btn">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Download CV
+    </a>
+  </div>
+  <div class="hero-scroll"><span class="scroll-line"></span>Scroll to explore</div>
+</section>
+
+<section id="stats">
+  <div class="stat-item reveal"><span class="stat-number">17</span><span class="stat-label">Books Authored</span></div>
+  <div class="stat-item reveal reveal-delay-1"><span class="stat-number">22</span><span class="stat-label">Years of Age</span></div>
+  <div class="stat-item reveal reveal-delay-2"><span class="stat-number">A+</span><span class="stat-label">Academic Record</span></div>
+  <div class="stat-item reveal reveal-delay-3"><span class="stat-number">∞</span><span class="stat-label">Still Building</span></div>
+</section>
+
+<section id="about">
+  <div>
+    <div class="about-label reveal">About Me</div>
+    <h2 class="about-title reveal reveal-delay-1">The world's most <em>important</em> work is teaching.</h2>
+    <p class="about-text reveal reveal-delay-2">
+      I am M. Arham B. Mazhar — professor, author of seventeen books, technologist, and an entrepreneur with business running deep in my roots. At twenty-two, I have built what most spend a lifetime working toward.
+      <br><br>
+      What drives me is not ambition alone — it is the belief that knowledge shared becomes knowledge multiplied. Every classroom I stand in, every book I write, every system I build is a deliberate act of leadership and legacy.
+      <br><br>
+      I was born to lead. I was built to create.
+    </p>
+  </div>
+  <div class="about-visual reveal reveal-delay-2">
+    <div class="about-frame">
+      <div class="about-frame-inner">XVII</div>
+      <div class="about-frame-quote">"The pen, the podium, and the balance sheet — I have never had to choose between them."</div>
+    </div>
+    <div class="corner-accent corner-tl"></div>
+    <div class="corner-accent corner-br"></div>
+  </div>
+</section>
+
+<!-- TEACHING SPOTLIGHT -->
+<section id="teaching">
+  <div class="teaching-number">①</div>
+  <div class="teaching-inner">
+    <div>
+      <div class="teaching-label reveal">My Greatest Pride</div>
+      <h2 class="teaching-title reveal reveal-delay-1">Teaching is not<br>what I do —<br>it is <em>who I am.</em></h2>
+      <p class="teaching-body reveal reveal-delay-2">
+        Of everything I have built and everything I have written, it is the classroom that defines me most. Standing before students — watching a concept click, watching a mindset shift, watching someone realise what they are capable of — that is the work no book or business can replicate.
+        <br><br>
+        I believe the most powerful thing a person can do is transfer knowledge with intention. That is what I show up to do, every single time.
+      </p>
+    </div>
+    <div>
+      <div class="teaching-philosophy reveal reveal-delay-1">
+        "A mind shaped in the classroom carries that shaping for a lifetime. That is the only legacy worth building."
+      </div>
+      <div class="teaching-pillars reveal reveal-delay-2">
+        <div class="teaching-pillar">
+          <span class="pillar-icon">💡</span>
+          <div class="pillar-title">Clarity First</div>
+          <p class="pillar-text">Complex ideas deserve simple delivery. Every lesson is an exercise in making the difficult feel inevitable.</p>
+        </div>
+        <div class="teaching-pillar">
+          <span class="pillar-icon">🔥</span>
+          <div class="pillar-title">Ignite Curiosity</div>
+          <p class="pillar-text">The goal is not to fill a mind with answers — it is to build one that never stops asking questions.</p>
+        </div>
+        <div class="teaching-pillar">
+          <span class="pillar-icon">🏛️</span>
+          <div class="pillar-title">Build Legacy</div>
+          <p class="pillar-text">What a student carries out of a classroom outlives every grade, every exam, every semester.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="books">
+  <div class="section-header">
+    <div>
+      <div class="section-label reveal">Published Works</div>
+      <h2 class="section-title reveal reveal-delay-1">Seventeen books.<br><em>One voice.</em></h2>
+    </div>
+    <div class="section-count reveal">17</div>
+  </div>
+  <div class="books-featured">
+    <div class="book-card-large reveal">
+      <div class="book-num">01</div>
+      <div class="book-genre-tag">Genre / Subject — Placeholder</div>
+      <div class="book-title-large">Book Title — To Be Updated</div>
+      <div class="book-desc">A brief description of what this book covers, who it is for, and what makes it stand out. Replace with the actual synopsis and publishing details.</div>
+    </div>
+    <div class="book-card-large reveal reveal-delay-1">
+      <div class="book-num">02</div>
+      <div class="book-genre-tag">Genre / Subject — Placeholder</div>
+      <div class="book-title-large">Book Title — To Be Updated</div>
+      <div class="book-desc">Replace with the real synopsis and details of this work.</div>
+    </div>
+    <div class="book-card-large reveal reveal-delay-1">
+      <div class="book-num">03</div>
+      <div class="book-genre-tag">Genre / Subject — Placeholder</div>
+      <div class="book-title-large">Book Title — To Be Updated</div>
+      <div class="book-desc">Replace with the real synopsis and details of this work.</div>
+    </div>
+    <div class="book-card-large reveal reveal-delay-2">
+      <div class="book-num">04</div>
+      <div class="book-genre-tag">Genre / Subject — Placeholder</div>
+      <div class="book-title-large">Book Title — To Be Updated</div>
+      <div class="book-desc">Replace with real content for this title.</div>
+    </div>
+    <div class="book-card-large reveal reveal-delay-3">
+      <div class="book-num">05</div>
+      <div class="book-genre-tag">Genre / Subject — Placeholder</div>
+      <div class="book-title-large">Book Title — To Be Updated</div>
+      <div class="book-desc">Replace with real content for this title.</div>
+    </div>
+  </div>
+  <div class="books-view-all reveal">
+    <span class="view-all-text">Explore all <strong>17 published works</strong> — view full catalogue</span>
+    <span class="view-all-arrow">→</span>
+  </div>
+</section>
+
+<section id="roles">
+  <div class="section-label reveal">What I Do</div>
+  <h2 class="section-title reveal reveal-delay-1">A man of <em>many</em> crafts.</h2>
+  <div class="roles-grid">
+    <div class="role-card reveal"><div class="role-card-accent"></div><span class="role-icon">🎓</span><h3 class="role-card-title">Professor</h3><p class="role-card-text">The classroom is where I am most at home. Shaping how young minds think — that is the work I take most seriously. Teaching is not a title. It is a responsibility.</p></div>
+    <div class="role-card reveal reveal-delay-1"><div class="role-card-accent"></div><span class="role-icon">✍️</span><h3 class="role-card-title">Author</h3><p class="role-card-text">Seventeen books by twenty-two. Writing is how I make ideas permanent — accessible to anyone, anywhere, long after any single conversation ends. Every book is a classroom that never closes.</p></div>
+    <div class="role-card reveal reveal-delay-2"><div class="role-card-accent"></div><span class="role-icon">⚡</span><h3 class="role-card-title">Technologist</h3><p class="role-card-text">Technology is the infrastructure of the future. I study it, build with it, and look for where it intersects with education, enterprise, and human potential.</p></div>
+    <div class="role-card reveal"><div class="role-card-accent"></div><span class="role-icon">📈</span><h3 class="role-card-title">Entrepreneur</h3><p class="role-card-text">Business is not something I learned from a textbook — it was inherited, observed, and lived. With a strong family enterprise as my foundation, I understand commerce from the inside out.</p></div>
+    <div class="role-card reveal reveal-delay-1"><div class="role-card-accent"></div><span class="role-icon">🧠</span><h3 class="role-card-title">Scholar</h3><p class="role-card-text">A consistent A+ record reflects discipline, intellectual curiosity, and a refusal to be average. Academic excellence is the bedrock on which everything else is built.</p></div>
+    <div class="role-card reveal reveal-delay-2"><div class="role-card-accent"></div><span class="role-icon">🌍</span><h3 class="role-card-title">Visionary</h3><p class="role-card-text">At twenty-two, the journey is just beginning. The convergence of teaching, writing, technology, and enterprise is not a distraction — it is the destination.</p></div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="section-header">
+    <div>
+      <div class="section-label reveal">Testimonials</div>
+      <h2 class="section-title reveal reveal-delay-1">What others <em>say.</em></h2>
+    </div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <span class="testimonial-quote-mark">"</span>
+      <p class="testimonial-text">Add a quote from a professor, mentor, or senior academic who has observed your work. Something that speaks to your intellectual depth and dedication.</p>
+      <span class="testimonial-name">Prof. Full Name — Placeholder</span>
+      <span class="testimonial-role">Role · Institution</span>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <span class="testimonial-quote-mark">"</span>
+      <p class="testimonial-text">A quote from a colleague, business partner, or co-author who can speak to your work ethic, creativity, and the quality of what you produce.</p>
+      <span class="testimonial-name">Full Name — Placeholder</span>
+      <span class="testimonial-role">Role · Organisation</span>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <span class="testimonial-quote-mark">"</span>
+      <p class="testimonial-text">A student or reader whose life was impacted by your teaching or writing. The most powerful testimonials are personal and specific.</p>
+      <span class="testimonial-name">Full Name — Placeholder</span>
+      <span class="testimonial-role">Student · Institution</span>
+    </div>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="section-label reveal">Milestones</div>
+  <h2 class="section-title reveal reveal-delay-1">A record <em>built</em><br>to speak for itself.</h2>
+  <div class="achievements-list">
+    <div class="achievement-item reveal"><span class="achievement-num">001</span><span class="achievement-text">Authored <em>17 books</em> before the age of 22</span><span class="achievement-tag">Authorship</span></div>
+    <div class="achievement-item reveal reveal-delay-1"><span class="achievement-num">002</span><span class="achievement-text">Consistent <em>A+ academic record</em> throughout education</span><span class="achievement-tag">Academia</span></div>
+    <div class="achievement-item reveal reveal-delay-2"><span class="achievement-num">003</span><span class="achievement-text">Appointed as <em>Professor</em> at a remarkably young age</span><span class="achievement-tag">Teaching</span></div>
+    <div class="achievement-item reveal"><span class="achievement-num">004</span><span class="achievement-text">Active leadership role in a <em>family business</em> enterprise</span><span class="achievement-tag">Business</span></div>
+    <div class="achievement-item reveal reveal-delay-1"><span class="achievement-num">005</span><span class="achievement-text">Building <em>Book Sharing Platform</em> — Final Year Project</span><span class="achievement-tag">Technology</span></div>
+    <div class="achievement-item reveal reveal-delay-2"><span class="achievement-num">006</span><span class="achievement-text">Your next achievement — <em>add yours</em></span><span class="achievement-tag">Custom</span></div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="contact-title reveal">Let's <em>connect.</em></h2>
+  <p class="contact-sub reveal reveal-delay-1">Whether you are a reader, a researcher, a student, or a business partner — every great conversation starts with a single message.</p>
+  <a href="mailto:your@email.com" class="contact-btn reveal reveal-delay-2">Send a message</a>
+  <div style="margin-top:20px;" class="reveal reveal-delay-3">
+    <a href="cv-placeholder.pdf" download class="cv-btn" style="margin:0 auto;">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Download CV
+    </a>
+  </div>
+  <div class="social-links" style="margin-top:48px;" class="reveal reveal-delay-3">
+    <a href="#" class="social-link">LinkedIn</a>
+    <a href="#" class="social-link">Goodreads</a>
+    <a href="#" class="social-link">ResearchGate</a>
+    <a href="#" class="social-link">GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2025 M. Arham B. Mazhar — All rights reserved</span>
+  <span class="footer-mark">Born to lead. Built to create.</span>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  (function animateRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+    navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : 'var(--white-dim)'; });
+  });
+</script>
+</body>
+</html>
